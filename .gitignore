@@ -1,0 +1,41 @@
+# Dependencies
+node_modules/
+
+# Build output
+build/
+dist/
+
+# Environment & secrets — NEVER commit these
+.env
+.env.*
+*.json.secret
+serviceAccount.json
+service-account.json
+firebase-adminsdk*.json
+google-credentials*.json
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+pnpm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Lock files
+yarn.lock
+package-lock.json
+
+# Claude Code internal files
+CLAUDE.md
+.claude/
