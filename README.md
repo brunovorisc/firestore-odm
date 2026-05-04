@@ -23,13 +23,14 @@ await db.$transaction(async (tx) => {
   const sender = await tx.users.findUniqueOrThrow({ 
     where: { id: senderId } 
   })
+  
   tx.users.update({ 
-    where: {id: senderId }, 
-    data: { balance: sender.balance - amount } 
-  })
-  tx.users.update({ 
-    where: { id: receiverId }, 
-    data: { balance: { increment: amount } } 
+    where: { 
+      id: senderId 
+    }, 
+    data: { 
+      balance: sender.balance - amount 
+    } 
   })
 })
 ```
@@ -211,7 +212,7 @@ const partial = await repo.findMany({
 
 // omit: strip sensitive fields before returning
 const safe = await repo.findUnique({
-  where: { id: 'uid123' },
+  where: { id: 'x0sDDPL3viYqoZKPsuu1' },
   omit: { passwordHash: true },
 })
 // type: Omit<User, 'passwordHash'>
@@ -228,13 +229,19 @@ await repo.findMany({ take: 10, skip: 20 })
 // Cursor-based (requires orderBy for deterministic results)
 const page1 = await repo.findMany({
   take: 10,
-  orderBy: { createdAt: 'asc' },
+  orderBy: { 
+    createdAt: 'asc'
+  },
 })
 
 const page2 = await repo.findMany({
   take: 10,
-  cursor: { id: page1.at(-1)!.id },
-  orderBy: { createdAt: 'asc' },
+  cursor: { 
+    id: page1.at(-1)!.id 
+  },
+  orderBy: { 
+    createdAt: 'asc' 
+  },
 })
 ```
 
@@ -257,13 +264,12 @@ await db.$transaction(async (tx) => {
   }
 
   tx.users.update({ 
-    where: { id: senderId }, 
-    data: { balance: sender.balance - amount } 
-  })
-
-  tx.users.update({ 
-    where: { id: receiverId }, 
-    data: { balance: { increment: amount } } 
+    where: { 
+      id: senderId 
+    }, 
+    data: { 
+      balance: sender.balance - amount 
+    } 
   })
 })
 ```
