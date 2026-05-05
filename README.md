@@ -23,9 +23,14 @@ await db.$transaction(async (tx) => {
   const sender = await tx.users.findUniqueOrThrow({ 
     where: { id: senderId } 
   })
-  await tx.users.update({ 
-    where: { id: senderId }, 
-    data: { balance: sender.balance } 
+  
+  tx.users.update({ 
+    where: { 
+      id: senderId 
+    }, 
+    data: { 
+      balance: sender.balance - amount 
+    } 
   })
 })
 ```
@@ -229,13 +234,19 @@ await repo.findMany({ take: 10, skip: 20 })
 // Cursor-based (requires orderBy for deterministic results)
 const page1 = await repo.findMany({
   take: 10,
-  orderBy: { createdAt: 'asc' },
+  orderBy: { 
+    createdAt: 'asc'
+  },
 })
 
 const page2 = await repo.findMany({
   take: 10,
-  cursor: { id: page1.at(-1)!.id },
-  orderBy: { createdAt: 'asc' },
+  cursor: { 
+    id: page1.at(-1)!.id 
+  },
+  orderBy: { 
+    createdAt: 'asc' 
+  },
 })
 ```
 
@@ -257,9 +268,13 @@ await db.$transaction(async (tx) => {
     throw new Error('Insufficient funds')
   }
 
-  await tx.users.update({ 
-    where: { id: senderId }, 
-    data: { balance: sender.balance } 
+  tx.users.update({ 
+    where: { 
+      id: senderId 
+    }, 
+    data: { 
+      balance: sender.balance - amount 
+    } 
   })
 })
 ```
