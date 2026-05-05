@@ -23,14 +23,9 @@ await db.$transaction(async (tx) => {
   const sender = await tx.users.findUniqueOrThrow({ 
     where: { id: senderId } 
   })
-  
-  tx.users.update({ 
-    where: { 
-      id: senderId 
-    }, 
-    data: { 
-      balance: sender.balance - amount 
-    } 
+  await tx.users.update({ 
+    where: { id: senderId }, 
+    data: { balance: sender.balance } 
   })
 })
 ```
@@ -87,8 +82,9 @@ type CreateUser = Omit<User, 'id' | 'createdAt' | 'updatedAt'>
 
 export class UsersRepository extends BaseRepository<User, CreateUser> {
   constructor() {
-    // Collection name. Pass a default `role` so every created user starts as 'member'.
-    super('users', null, { role: 'member' })
+    const db = '(default)'
+    const defaults = { role: 'member' }
+    super('users', db, defaults)
   }
 }
 ```
@@ -101,13 +97,17 @@ import { createOdmClient } from '@vorisc/firestore-odm'
 import { UsersRepository } from './repos/users.repo'
 import { OrdersRepository } from './repos/orders.repo'
 
-export const db = createOdmClient(
-  {
-    users: new UsersRepository(),
-    orders: new OrdersRepository(),
-  },
-  { serviceAccount: process.env.FIREBASE_SERVICE_ACCOUNT! },
-)
+const repos = {
+  users: new UsersRepository(),
+  orders: new OrdersRepository(),
+}
+
+const credentials = {
+  // JSON string of the service account (e.g. the contents of serviceAccount.json)
+  serviceAccount: process.env.FIREBASE_SERVICE_ACCOUNT!
+}
+
+export const db = createOdmClient(repos, credentials)
 ```
 
 ### 3. Query
@@ -229,19 +229,13 @@ await repo.findMany({ take: 10, skip: 20 })
 // Cursor-based (requires orderBy for deterministic results)
 const page1 = await repo.findMany({
   take: 10,
-  orderBy: { 
-    createdAt: 'asc'
-  },
+  orderBy: { createdAt: 'asc' },
 })
 
 const page2 = await repo.findMany({
   take: 10,
-  cursor: { 
-    id: page1.at(-1)!.id 
-  },
-  orderBy: { 
-    createdAt: 'asc' 
-  },
+  cursor: { id: page1.at(-1)!.id },
+  orderBy: { createdAt: 'asc' },
 })
 ```
 
@@ -263,13 +257,9 @@ await db.$transaction(async (tx) => {
     throw new Error('Insufficient funds')
   }
 
-  tx.users.update({ 
-    where: { 
-      id: senderId 
-    }, 
-    data: { 
-      balance: sender.balance - amount 
-    } 
+  await tx.users.update({ 
+    where: { id: senderId }, 
+    data: { balance: sender.balance } 
   })
 })
 ```
@@ -300,7 +290,9 @@ every `create` and `createMany` call, with the provided data taking precedence.
 ```ts
 class PostsRepository extends BaseRepository<Post, CreatePost> {
   constructor() {
-    super('posts', null, { status: 'draft', views: 0 })
+    const db = '(default)'
+    const defaults = { status: 'draft', views: 0 }
+    super('posts', db, defaults)
   }
 }
 
@@ -308,7 +300,7 @@ class PostsRepository extends BaseRepository<Post, CreatePost> {
 await repo.create({ 
   data: { 
     title: 'Hello World', 
-    authorId: 'u1' 
+    authorId: 'x0sDDPL3viYqoZKPsuu1' 
   } 
 })
 ```
@@ -322,7 +314,9 @@ Add domain-specific methods directly on your repository class:
 ```ts
 export class UsersRepository extends BaseRepository<User, CreateUser> {
   constructor() {
-    super('users', null, { role: 'member' })
+    const db = '(default)'
+    const defaults = { role: 'member' }
+    super('users', db, defaults)
   }
 
   findByEmail(email: string): Promise<User | null> {
@@ -341,8 +335,8 @@ export class UsersRepository extends BaseRepository<User, CreateUser> {
 
 ```ts
 const db = createOdmClient(repos, {
-  serviceAccount: process.env.FIREBASE_SERVICE_ACCOUNT!,
-  emulator: true,                    // uses localhost:8080
+  serviceAccount: process.env.FIREBASE_SERVICE_ACCOUNT!, // JSON string
+  emulator: true,                   
   // emulator: { host: 'localhost', port: 9090 }  // custom host/port
 })
 ```
