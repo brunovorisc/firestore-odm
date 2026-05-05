@@ -25,12 +25,8 @@ await db.$transaction(async (tx) => {
   })
   
   tx.users.update({ 
-    where: { 
-      id: senderId 
-    }, 
-    data: { 
-      balance: sender.balance - amount 
-    } 
+    where: { id: senderId }, 
+    data: { balance: sender.balance } 
   })
 })
 ```
@@ -234,19 +230,13 @@ await repo.findMany({ take: 10, skip: 20 })
 // Cursor-based (requires orderBy for deterministic results)
 const page1 = await repo.findMany({
   take: 10,
-  orderBy: { 
-    createdAt: 'asc'
-  },
+  orderBy: { createdAt: 'asc' },
 })
 
 const page2 = await repo.findMany({
   take: 10,
-  cursor: { 
-    id: page1.at(-1)!.id 
-  },
-  orderBy: { 
-    createdAt: 'asc' 
-  },
+  cursor: { id: page1.at(-1)!.id },
+  orderBy: { createdAt: 'asc' },
 })
 ```
 
@@ -269,12 +259,8 @@ await db.$transaction(async (tx) => {
   }
 
   tx.users.update({ 
-    where: { 
-      id: senderId 
-    }, 
-    data: { 
-      balance: sender.balance - amount 
-    } 
+    where: { id: senderId }, 
+    data: {balance: sender.balance } 
   })
 })
 ```
