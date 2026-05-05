@@ -1,7 +1,7 @@
 {
   "name": "@vorisc/firestore-odm",
   "description": "ODM for Firestore, inspired by Prisma's developer experience",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "author": "Bruno Vorisc <contato@vorisc.com.br>",
   "type": "module",
   "license": "ISC",
