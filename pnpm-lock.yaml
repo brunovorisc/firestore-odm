@@ -7,10 +7,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      firebase-admin:
-        specifier: 13.5.0
-        version: 13.5.0
     devDependencies:
       '@biomejs/biome':
         specifier: 2.4.5
@@ -18,6 +14,9 @@ importers:
       '@types/node':
         specifier: 24.0.14
         version: 24.0.14
+      firebase-admin:
+        specifier: '>=13.0.0'
+        version: 13.5.0
       tsup:
         specifier: 8.5.0
         version: 8.5.0(typescript@5.8.3)
