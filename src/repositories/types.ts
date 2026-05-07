@@ -88,7 +88,6 @@ export interface FindManyArgs<TDoc> {
 export interface FindFirstArgs<TDoc> {
   where?: WhereClause<TDoc>
   orderBy?: OrderByClause<TDoc> | Array<OrderByClause<TDoc>>
-  take?: number
   select?: SelectArg<TDoc>
   omit?: OmitArg<TDoc>
 }

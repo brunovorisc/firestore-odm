@@ -54,7 +54,7 @@ export class QueryBuilder<TDoc extends Record<string, unknown>> {
 
   /** Returns a query with the given `where` filter applied, or the bare collection query if no filter. */
   buildQuery(where?: WhereClause<TDoc>): Query {
-    if (!where) return this.collection as unknown as Query
+    if (!where) return this.collection as Query
     return this.applyWhere(this.collection, where)
   }
 
