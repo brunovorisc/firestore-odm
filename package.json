@@ -1,13 +1,25 @@
 {
   "name": "@vorisc/firestore-odm",
-  "description": "ODM for Firestore, inspired by Prisma's developer experience",
+  "description": "A TypeScript ODM for Firestore, inspired by Prisma's developer experience",
   "version": "0.1.5",
   "author": "Bruno Vorisc <contato@vorisc.com.br>",
   "type": "module",
-  "license": "ISC",
-  "main": "./build/index.cjs",
-  "module": "./build/index.js",
-  "types": "./build/index.d.ts",
+  "license": "MIT",
+  "sideEffects": false,
+  "keywords": [
+    "firebase",
+    "firestore",
+    "firebase-admin",
+    "odm",
+    "orm",
+    "prisma",
+    "typescript",
+    "database",
+    "repository-pattern",
+    "firestore-orm",
+    "firestore-odm"
+  ],
+  "homepage": "https://github.com/brunovorisc/firestore-odm#readme",
   "bugs": {
     "url": "https://github.com/brunovorisc/firestore-odm/issues"
   },
@@ -15,11 +27,9 @@
     "type": "git",
     "url": "git+https://github.com/brunovorisc/firestore-odm.git"
   },
-  "keywords": [
-    "firebase",
-    "firestore",
-    "odm"
-  ],
+  "main": "./build/index.cjs",
+  "module": "./build/index.js",
+  "types": "./build/index.d.ts",
   "exports": {
     ".": {
       "import": {
@@ -43,14 +53,16 @@
     "lint": "biome lint ./src",
     "format": "biome format --write ./src",
     "check": "biome check ./src",
-    "prepublishOnly": "pnpm build && pnpm check"
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "pnpm build && pnpm check && pnpm typecheck"
   },
-  "dependencies": {
-    "firebase-admin": "13.5.0"
+  "peerDependencies": {
+    "firebase-admin": ">=13.0.0"
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.5",
     "@types/node": "24.0.14",
+    "firebase-admin": "13.5.0",
     "tsup": "8.5.0",
     "typescript": "5.8.3"
   },
@@ -67,5 +79,6 @@
   },
   "engines": {
     "node": ">=22"
-  }
+  },
+  "packageManager": "pnpm@10.0.0"
 }
