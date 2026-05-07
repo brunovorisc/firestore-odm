@@ -1,5 +1,7 @@
 export type { OdmInitOptions } from '@/lib/firebase'
 export { getDb, initFirebase } from '@/lib/firebase'
+// Exported so subclasses can be initialized by OdmClient.
+// Symbol keys prevent accidental calls — they don't appear in IDE autocomplete.
 export {
   $asBatch,
   $asTransaction,

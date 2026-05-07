@@ -12,7 +12,10 @@ export class OdmError extends Error {
 /** Thrown when no document matches the given filter. */
 export class NotFoundError extends OdmError {
   constructor(collection: string, where: object) {
-    super(`"${collection}": ${JSON.stringify(where)}`, 'NOT_FOUND')
+    super(
+      `No document found in "${collection}" matching ${JSON.stringify(where)}`,
+      'NOT_FOUND',
+    )
     this.name = 'NotFoundError'
   }
 }
@@ -20,7 +23,10 @@ export class NotFoundError extends OdmError {
 /** Thrown when a query is attempted before `createOdmClient` / `init()` has been called. */
 export class UninitializedError extends OdmError {
   constructor() {
-    super('must be called before running queries', 'UNINITIALIZED')
+    super(
+      '`createOdmClient` or `init()` must be called before running queries',
+      'UNINITIALIZED',
+    )
     this.name = 'UninitializedError'
   }
 }

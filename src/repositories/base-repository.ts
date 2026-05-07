@@ -331,6 +331,8 @@ export class BaseRepository<
       spec._count = AggregateField.count()
     }
 
+    // Firestore's aggregate spec is a flat Record with unique keys.
+    // Prefixes (_sum__, _avg__) prevent collision between same-named fields.
     if (args._sum) {
       for (const field of Object.keys(args._sum)) {
         if (args._sum[field as keyof typeof args._sum]) {
@@ -449,9 +451,11 @@ export class BaseRepository<
     if (args.cursor) {
       const cursorSnap = await this.collection.doc(args.cursor.id).get()
 
-      if (cursorSnap.exists) {
-        query = query.startAfter(cursorSnap)
+      if (!cursorSnap.exists) {
+        throw new NotFoundError(this.collectionName, { id: args.cursor.id })
       }
+
+      query = query.startAfter(cursorSnap)
     }
 
     return query

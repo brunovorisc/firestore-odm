@@ -99,9 +99,12 @@ export class TransactionRepository<
 
     if (args.cursor) {
       const cursorSnap = await this.tx.get(this.collection.doc(args.cursor.id))
-      if (cursorSnap.exists) {
-        query = query.startAfter(cursorSnap)
+
+      if (!cursorSnap.exists) {
+        throw new NotFoundError(this.collection.id, { id: args.cursor.id })
       }
+
+      query = query.startAfter(cursorSnap)
     }
 
     const snap = await this.tx.get(query)
@@ -128,7 +131,10 @@ export class TransactionRepository<
     } as unknown as TDoc
   }
 
-  /** Enqueues an update. Throws `NotFoundError` when using a `WhereClause` and no match is found. */
+  /**
+   * Enqueues an update. Throws `NotFoundError` when using a `WhereClause` and no match is found.
+   * Returns `void` unlike `BaseRepository.update` — the updated document is not available until the transaction commits.
+   */
   async update(args: UpdateArgs<TDoc>): Promise<void> {
     const { where, data } = args
     const withTimestamp = withUpdateTimestamp(data as Record<string, unknown>)

@@ -52,8 +52,8 @@ export class BatchRepository<
       'where' | 'create' | 'update'
     > & { where: { id: string } },
   ): { id: string } {
-    const { id, data } = extractDocData(args.create as Record<string, unknown>)
-    const docId = args.where.id ?? id ?? this.collection.doc().id
+    const { data } = extractDocData(args.create as Record<string, unknown>)
+    const docId = args.where.id
     const withDefaults = applyDefaults(this.defaults, data)
     const withTimestamps = withCreateTimestamps(withDefaults)
     const updateData = withUpdateTimestamp(
