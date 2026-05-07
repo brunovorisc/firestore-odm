@@ -1,7 +1,7 @@
 {
   "name": "@vorisc/firestore-odm",
   "description": "A TypeScript ODM for Firestore, inspired by Prisma's developer experience",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "author": "Bruno Vorisc <contato@vorisc.com.br>",
   "type": "module",
   "license": "MIT",
@@ -62,7 +62,7 @@
   "devDependencies": {
     "@biomejs/biome": "2.4.5",
     "@types/node": "24.0.14",
-    "firebase-admin": "13.5.0",
+    "firebase-admin": ">=13.0.0",
     "tsup": "8.5.0",
     "typescript": "5.8.3"
   },
