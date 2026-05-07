@@ -24,11 +24,13 @@ export function initFirebase(options: OdmInitOptions): Firestore {
   const serviceAccount = JSON.parse(options.serviceAccount) as ServiceAccount
 
   if (options.emulator) {
-    if (typeof options.emulator === 'object') {
-      const host = options.emulator.host ?? 'localhost'
-      const port = options.emulator.port ?? 8080
-      process.env.FIRESTORE_EMULATOR_HOST = `${host}:${port}`
-    }
+    const emulatorOptions =
+      typeof options.emulator === 'object' ? options.emulator : {}
+
+    const host = emulatorOptions.host ?? 'localhost'
+    const port = emulatorOptions.port ?? 8080
+
+    process.env.FIRESTORE_EMULATOR_HOST = `${host}:${port}`
   }
 
   let app = getApps()[0]
